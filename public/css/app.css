@@ -30,6 +30,11 @@
 }
 
 
+#editor {
+  width: 200px;
+  height: 100px;
+}
+
 /* Custom CSS overriding bootstrap fixong top-navbar and body padding issue */
 @media (min-width: 980px){
       body {

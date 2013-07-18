@@ -13,7 +13,8 @@ block body
   .container-fluid      
     div(ng-controller='AppCtrl')
       .hero-unit  
-        h1 Hello {{name}}
+          #editor
+          #status
       div(ng-view)
     hr  
     div
@@ -28,3 +29,33 @@ block body
   script(src='js/directives.js')
   script(src='js/lib/jquery/jquery-1.9.1.min.js')
   script(src='bootstrap/js/bootstrap.min.js')
+  script(src='http://ajaxorg.github.com/ace/build/src/ace.js')
+  script(src='http://127.0.0.1:8000/channel/bcsocket.js')
+  script(src='http://127.0.0.1:8000/share/share.js')
+  script(src='http://127.0.0.1:8000/share/textarea.js')
+  script.
+    (function(){
+    var elem = document.getElementById('pad');
+    var options = {
+      origin: "http://localhost:8000/channel"
+    }
+    var editor = ace.edit("editor");
+
+    var connection = sharejs.open('hello', 'text', options, function(error, doc) {
+        doc.attach_textarea(editor);
+    });
+
+    // *** Connection status display
+    var status = document.getElementById('status');
+    var register = function(state, klass, text) {
+    connection.on(state, function() {
+      status.className = 'label ' + klass;
+      status.innerHTML = text;
+    });
+    };
+
+    register('ok', 'success', 'Online');
+    register('connecting', 'warning', 'Connecting...');
+    register('disconnected', 'important', 'Offline');
+    register('stopped', 'important', 'Error');
+    })();
