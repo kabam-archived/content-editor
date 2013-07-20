@@ -4,7 +4,9 @@ content-editor
 ```console
 npm install
 ```
-
+```console
+node app
+```
 
 TODO:
 ==============
