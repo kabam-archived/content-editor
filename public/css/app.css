@@ -1,43 +1,59 @@
-/* app css stylesheet */
-
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
-}
-
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
-  display: inline;
-}
-
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
-}
-
-
-#editor {
-  width: 200px;
-  height: 100px;
-}
-
-/* Custom CSS overriding bootstrap fixong top-navbar and body padding issue */
-@media (min-width: 980px){
       body {
-        padding-top:60px;
+      padding-top: 60px;
       }
-    }
+      p {
+      word-spacing: 1.5px;
+      font-size: 16px;
+      line-height: 1.625em;
+      padding:0 0 0.8125em 0;
+      }
+      .wide li {
+      margin: 0 0 0.8125em 0;
+      font-size: 16px;
+      line-height: 1.625em;
+      }
+      section {
+      padding-top: 30px;
+      }
+      #pad {
+      width: 90%;
+      }
+      .prettyprint {
+      background-color: #fefbf3;
+      padding: 9px;
+      border: 1px solid rgba(0,0,0,.2);
+      -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+      -moz-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+      box-shadow: 0 1px 2px rgba(0,0,0,.1);
+      }
+      #trains {
+      list-style-type: none;
+      margin: 0;
+      width: 100%;
+      }
+      #trains li {
+      margin: 0 3px 3px 3px;
+      padding: 0.4em;
+      padding-left: 1.5em;
+      font-size: 1.4em;
+      height: 18px;
+      border: 1px solid #CCC;
+      outline: none;
+      -webkit-border-radius: 3px;
+      border-radius: 3px;
+      -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+      -moz-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+      box-shadow: 0 1px 2px rgba(0,0,0,.1);
+      }
+      #trains li:hover {
+      background-color: #fff9bd;
+      }
+      .footer {
+      background-color: #EEE;
+      min-width: 940px;
+      padding: 30px 0;
+      text-shadow: 0 1px 0 white;
+      border-top: 1px solid #E5E5E5;
+      -webkit-box-shadow: inset 0 5px 15px rgba(0,0,0,.025);
+      -moz-box-shadow: inset 0 5px 15px rgba(0,0,0,.025);
+      }

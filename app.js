@@ -8,6 +8,17 @@ var express = require('express'),
   api = require('./routes/api');
 
 var app = module.exports = express();
+//var connect = require('connect'),
+    sharejs = require('share').server;
+
+//var server = connect(
+  //    connect.logger(),
+    //  connect.static(__dirname + '/public')
+    //);
+var options = {db: {type: 'none'}}; // See docs for options. {type: 'redis'} to enable persistance.
+
+// Attach the sharejs REST and Socket.io interfaces to the server
+sharejs.attach(app, options);
 
 // Configuration
 
@@ -28,19 +39,16 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-// Routes
 
+// Routes
 app.get('/', routes.index);
 app.get('/partial/:name', routes.partial);
 
 // JSON API
-
 app.get('/api/name', api.name);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
-
-// Start server
 
 app.listen(3000, function(){
   console.log("Server started");

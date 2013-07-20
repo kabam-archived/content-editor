@@ -1,61 +1,142 @@
-extends layout
-
-block body
-  .navbar.navbar-fixed-top
-    .navbar-inner
-      .container-fluid
-        a.brand(href='#') mywebclass Content Editor
-        ul.nav
-          li
-            a(href='view1') Home
-          li
-            a(href='view2') About                
-  .container-fluid      
-    div(ng-controller='AppCtrl')
-      .hero-unit  
-          #editor
-          #status
-      div(ng-view)
-    hr  
-    div
-      | Angular seed app: v
-      span(app-version)
-
-  script(src='js/lib/angular/angular.js')
-  script(src='js/app.js')
-  script(src='js/services.js')
-  script(src='js/controllers.js')
-  script(src='js/filters.js')
-  script(src='js/directives.js')
-  script(src='js/lib/jquery/jquery-1.9.1.min.js')
-  script(src='bootstrap/js/bootstrap.min.js')
-  script(src='http://ajaxorg.github.com/ace/build/src/ace.js')
-  script(src='http://127.0.0.1:8000/channel/bcsocket.js')
-  script(src='http://127.0.0.1:8000/share/share.js')
-  script(src='http://127.0.0.1:8000/share/textarea.js')
-  script.
-    (function(){
-    var elem = document.getElementById('pad');
-    var options = {
-      origin: "http://localhost:8000/channel"
-    }
-    var editor = ace.edit("editor");
-
-    var connection = sharejs.open('hello', 'text', options, function(error, doc) {
-        doc.attach_textarea(editor);
-    });
-
-    // *** Connection status display
-    var status = document.getElementById('status');
-    var register = function(state, klass, text) {
-    connection.on(state, function() {
+!!! 5
+html
+head
+    link(rel='stylesheet', href='lib/bootstrap.min.css')
+    link(rel='stylesheet', href='lib/prettify.css')
+    link(rel='stylesheet', href='css/app.css')
+    title
+  body(onload='prettyPrint()')
+    .topbar
+      .fill
+        .container
+          a.brand(href='#') mywebclass
+          ul.nav
+            //
+                          <li class="active"><a href="#">Intro</a></li>
+          ul.nav.secondary-nav
+            li
+              a
+                span#status.label.warning Loading...
+            li
+              a(href='#') Home
+            li
+              a(href='#') About
+            li
+              a(href='https://github.com/mywebclass/content-editor') Github
+    .container
+      section#intro
+        .page-header
+          h1 mywebclass – Content Editor.
+        p
+          | ShareJS is an Operational Transform library for NodeJS & browsers. It lets you easily do live concurrent editing
+          | in your app.
+        .row
+          .row
+            .span14.offset1
+              h3 Here’s etherpad in 4 lines.
+              textarea#pad(rows='8', disabled='disabled') Loading. (Or it's probably broken and you should come back later.)
+              span.help-block
+                | Everyone viewing this page can see your edits live.    
+    footer.footer
+      .container
+        p.pull-right
+          | mywebclass
+          | &copy 2013
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js')
+    script(src='/channel/bcsocket.js')
+    script(src='/share/share.uncompressed.js')
+    script(src='/share/textarea.js')
+    script(src='/lib/prettify.js')
+    script(src='/share/json.js')
+    script
+      $(function() {
+      // *** Editor window
+      var elem = document.getElementById('pad');
+      var connection = sharejs.open('blag', 'text', function(error, doc) {
+      if (error) {
+      console.log(error);
+      } else {
+      elem.disabled = false;
+      doc.attach_textarea(elem);
+      }
+      });
+      // *** Connection status display
+      var status = document.getElementById('status');
+      var register = function(state, klass, text) {
+      connection.on(state, function() {
       status.className = 'label ' + klass;
       status.innerHTML = text;
-    });
-    };
-
-    register('ok', 'success', 'Online');
-    register('connecting', 'warning', 'Connecting...');
-    register('disconnected', 'important', 'Offline');
-    register('stopped', 'important', 'Error');
-    })();
+      });
+      };
+      register('ok', 'success', 'Online');
+      register('connecting', 'warning', 'Connecting...');
+      register('disconnected', 'important', 'Offline');
+      register('stopped', 'important', 'Error');
+      // *** Draggable trains example
+      sharejs.open('thomas', 'json', function(error, doc) {
+      if (error) {
+      if (console) {
+      console.error(error);
+      }
+      return;
+      }
+      if (doc.created) {
+      doc.set(["Thomas the Tank Engine",
+      "Edward the Blue Engine",
+      "Henry the Green Engine",
+      "Gordon the Big Engine",
+      "James the Red Engine",
+      "Percy the Small Engine",
+      "The Fat Controller"
+      ]);
+      }
+      var trains = doc.get();
+      $.each(trains, function(i, train) {
+      $('#trains').append($('<li>').text(trains[i])); //.attr('data-id', i)
+      });
+      var dragFrom = null;
+      doc.at().on('move', function(from, to) {
+      //console.log('move', from, to);
+      if (dragFrom === from) {
+      dragFrom = to;
+      } else {
+      //console.log('#trains :nth-child(' + (from + 1) + ')');
+      //console.log($('#trains :nth-child(' + 1 + ')'));
+      //console.log($('#trains :nth-child(' + 2 + ')'));
+      if (to === 0) {
+      $('#trains :nth-child(' + (from + 1) + ')')
+      .remove()
+      .insertBefore($('#trains :nth-child(' + (to + 1) + ')'));
+      } else {
+      $('#trains :nth-child(' + (from + 1) + ')')
+      .remove()
+      .insertAfter($('#trains :nth-child(' + to + ')'));
+      }
+      }
+      });
+      $("#trains").sortable({
+      helper: 'clone',
+      start: function(event, ui) {
+      dragFrom = ui.item.index();
+      ui.item.remove();
+      },
+      update: function(event, ui) {
+      //console.log('update', ui.item.index());
+      dragFrom = null;
+      },
+      change: function(event, ui) {
+      var newPos = ui.placeholder.index();
+      //console.log('sending move', dragFrom, newPos);
+      doc.at().move(dragFrom, newPos);
+      dragFrom = newPos;
+      },
+      beforeStop: function(event, ui) {
+      //console.log(ui.item);
+      ui.placeholder.before(ui.item);
+      },
+      axis: 'y'
+      });
+      $("#trains").disableSelection();
+      });
+      });

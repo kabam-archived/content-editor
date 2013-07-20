@@ -6,5 +6,6 @@
       "express": "3.0.0"
     , "jade": ">= 0.0.1"
     , "static_site_generator": "git+ssh://git@github.com:mywebclass/static_site_generator.git"
+    , "share": "*"
   }
 }
