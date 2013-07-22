@@ -27,16 +27,20 @@ head
       section#intro
         .page-header
           h1 mywebclass – Content Editor.
-        p
-          | ShareJS is an Operational Transform library for NodeJS & browsers. It lets you easily do live concurrent editing
-          | in your app.
         .row
           .row
-            .span14.offset1
-              h3 Here’s etherpad in 4 lines.
+            .span7.offset1
+              h3 Edit Your Content
               textarea#pad(rows='8', disabled='disabled') Loading. (Or it's probably broken and you should come back later.)
               span.help-block
-                | Everyone viewing this page can see your edits live.    
+                | Everyone viewing this page can see your edits live.
+            .span7.offset1
+              h3 Markdown Preview
+              #editor
+              #view
+        .row
+          .row
+
     footer.footer
       .container
         p.pull-right
@@ -44,13 +48,17 @@ head
           | &copy 2013
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js')
     script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js')
+    script(src='/lib/markdown/showdown.js')
     script(src='/channel/bcsocket.js')
     script(src='/share/share.uncompressed.js')
     script(src='/share/textarea.js')
     script(src='/lib/prettify.js')
     script(src='/share/json.js')
-    script
+    script.
       $(function() {
+      var converter = new Showdown.converter();
+      var view = document.getElementById('view');
+      
       // *** Editor window
       var elem = document.getElementById('pad');
       var connection = sharejs.open('blag', 'text', function(error, doc) {
@@ -59,7 +67,16 @@ head
       } else {
       elem.disabled = false;
       doc.attach_textarea(elem);
+      //doc.attach_ace(editor);
+      //edit.setReadOnly(false);
+      var render = function() {
+      view.innerHTML = converter.makeHtml(doc.snapshot);
+      };
       }
+      window.doc = doc;
+      render();
+      doc.on('change', render);
+      //});
       });
       // *** Connection status display
       var status = document.getElementById('status');
