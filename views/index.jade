@@ -31,44 +31,56 @@ head
           .row
             .span7.offset1
               h3 Edit Your Content
-              textarea#pad(rows='8', disabled='disabled') Loading. (Or it's probably broken and you should come back later.)
-              span.help-block
-                | Everyone viewing this page can see your edits live.
+              .editContainer
+                #editor
             .span7.offset1
               h3 Markdown Preview
-              #editor
               #view
         .row
           .row
+            .span7.offset1
+              span.help-block
+                | Everyone viewing this page can see your edits live.
 
     footer.footer
       .container
         p.pull-right
           | mywebclass
           | &copy 2013
+
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js')
     script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js')
     script(src='/lib/markdown/showdown.js')
+    script(src='/lib/ace/ace.js')
+    script(src='/lib/ace/mode-markdown.js')
     script(src='/channel/bcsocket.js')
     script(src='/share/share.uncompressed.js')
-    script(src='/share/textarea.js')
+    //script(src='/share/textarea.js')
+    script(src='/share/ace.js')
     script(src='/lib/prettify.js')
-    script(src='/share/json.js')
+    //script(src='/share/json.js')
     script.
       $(function() {
       var converter = new Showdown.converter();
       var view = document.getElementById('view');
-      
+      var editor = ace.edit("editor");
+      editor.setReadOnly(true);
+      editor.session.setUseWrapMode(true);
+
+      // add Markdown mode
+      var MarkdownScriptMode = require("ace/mode/markdown").Mode;
+      var session = editor.getSession();
+      session.setMode(new MarkdownScriptMode());
       // *** Editor window
-      var elem = document.getElementById('pad');
+
       var connection = sharejs.open('blag', 'text', function(error, doc) {
       if (error) {
       console.log(error);
       } else {
-      elem.disabled = false;
-      doc.attach_textarea(elem);
-      //doc.attach_ace(editor);
-      //edit.setReadOnly(false);
+
+      doc.attach_ace(editor);
+      editor.setReadOnly(false);
+
       var render = function() {
       view.innerHTML = converter.makeHtml(doc.snapshot);
       };
@@ -90,70 +102,5 @@ head
       register('connecting', 'warning', 'Connecting...');
       register('disconnected', 'important', 'Offline');
       register('stopped', 'important', 'Error');
-      // *** Draggable trains example
-      sharejs.open('thomas', 'json', function(error, doc) {
-      if (error) {
-      if (console) {
-      console.error(error);
-      }
-      return;
-      }
-      if (doc.created) {
-      doc.set(["Thomas the Tank Engine",
-      "Edward the Blue Engine",
-      "Henry the Green Engine",
-      "Gordon the Big Engine",
-      "James the Red Engine",
-      "Percy the Small Engine",
-      "The Fat Controller"
-      ]);
-      }
-      var trains = doc.get();
-      $.each(trains, function(i, train) {
-      $('#trains').append($('<li>').text(trains[i])); //.attr('data-id', i)
-      });
-      var dragFrom = null;
-      doc.at().on('move', function(from, to) {
-      //console.log('move', from, to);
-      if (dragFrom === from) {
-      dragFrom = to;
-      } else {
-      //console.log('#trains :nth-child(' + (from + 1) + ')');
-      //console.log($('#trains :nth-child(' + 1 + ')'));
-      //console.log($('#trains :nth-child(' + 2 + ')'));
-      if (to === 0) {
-      $('#trains :nth-child(' + (from + 1) + ')')
-      .remove()
-      .insertBefore($('#trains :nth-child(' + (to + 1) + ')'));
-      } else {
-      $('#trains :nth-child(' + (from + 1) + ')')
-      .remove()
-      .insertAfter($('#trains :nth-child(' + to + ')'));
-      }
-      }
-      });
-      $("#trains").sortable({
-      helper: 'clone',
-      start: function(event, ui) {
-      dragFrom = ui.item.index();
-      ui.item.remove();
-      },
-      update: function(event, ui) {
-      //console.log('update', ui.item.index());
-      dragFrom = null;
-      },
-      change: function(event, ui) {
-      var newPos = ui.placeholder.index();
-      //console.log('sending move', dragFrom, newPos);
-      doc.at().move(dragFrom, newPos);
-      dragFrom = newPos;
-      },
-      beforeStop: function(event, ui) {
-      //console.log(ui.item);
-      ui.placeholder.before(ui.item);
-      },
-      axis: 'y'
-      });
-      $("#trains").disableSelection();
-      });
-      });
+      
+      })();

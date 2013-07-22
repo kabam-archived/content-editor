@@ -15,8 +15,9 @@
       section {
       padding-top: 30px;
       }
-      #pad {
-      width: 90%;
+      .editContainer, #editor {
+      width: 400px;
+      height: 400px;
       }
       .prettyprint {
       background-color: #fefbf3;
@@ -25,28 +26,6 @@
       -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
       -moz-box-shadow: 0 1px 2px rgba(0,0,0,.1);
       box-shadow: 0 1px 2px rgba(0,0,0,.1);
-      }
-      #trains {
-      list-style-type: none;
-      margin: 0;
-      width: 100%;
-      }
-      #trains li {
-      margin: 0 3px 3px 3px;
-      padding: 0.4em;
-      padding-left: 1.5em;
-      font-size: 1.4em;
-      height: 18px;
-      border: 1px solid #CCC;
-      outline: none;
-      -webkit-border-radius: 3px;
-      border-radius: 3px;
-      -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
-      -moz-box-shadow: 0 1px 2px rgba(0,0,0,.1);
-      box-shadow: 0 1px 2px rgba(0,0,0,.1);
-      }
-      #trains li:hover {
-      background-color: #fff9bd;
       }
       .footer {
       background-color: #EEE;
