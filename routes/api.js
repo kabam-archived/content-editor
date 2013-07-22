@@ -1,8 +1,12 @@
+var generator = require('../static_site_generator');
 /*
  * Serve JSON to our AngularJS client
  */
 
-exports.name = function (req, res) {
+/*
+* Returns an object containing all sites
+*/
+exports.sites = function (req, res) {
   res.json({
   	name: 'Bob'
   });
