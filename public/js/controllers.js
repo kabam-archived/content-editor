@@ -6,9 +6,10 @@ function AppCtrl($scope, $http) {
   $http({method: 'GET', url: '/api/name'}).
   success(function(data, status, headers, config) {
     $scope.name = data.name;
+    console.log($scope.name);
   }).
   error(function(data, status, headers, config) {
-    $scope.name = 'Error!'
+    $scope.name= 'Error!'
   });
 }
 
