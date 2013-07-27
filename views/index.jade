@@ -22,9 +22,8 @@ block body
         .page-header
           h1 mywebclass – Content Editor.
             div(ng-controller='AppCtrl')
-              .hero-unit  
               div(ng-repeat='n in name')
-                h3 {{n.siteID}}
+                h3 Current Site: {{n.siteID}}
               div(ng-view)
         .row
           .row
@@ -47,6 +46,7 @@ block body
           | mywebclass
           | &copy 2013
     script(src='js/lib/angular/angular.js')
+    script(src='js/lib/angular/angular-resource.js')
     script(src='js/app.js')
     script(src='js/services.js')
     script(src='js/controllers.js')
@@ -63,7 +63,7 @@ block body
     script(src='/share/ace.js')
     script(src='/lib/prettify.js')
     script.
-      $(function() {
+      (function() {
       prettyPrint();
       var converter = new Showdown.converter();
       var view = document.getElementById('view');

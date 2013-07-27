@@ -2,15 +2,10 @@
 
 /* Controllers */
 
-function AppCtrl($scope, $http) {
-  $http({method: 'GET', url: '/api/name'}).
-  success(function(data, status, headers, config) {
-    $scope.name = data.name;
-    console.log($scope.name);
-  }).
-  error(function(data, status, headers, config) {
-    $scope.name= 'Error!'
-  });
+function AppCtrl($scope, Sites) {
+	Sites.get(function(data){
+      $scope.name = data.name;
+    });
 }
 
 function MyCtrl1() {}
