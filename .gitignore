@@ -1,5 +1,4 @@
 lib-cov
-node_modules
 *.seed
 *.log
 *.csv
@@ -7,9 +6,16 @@ node_modules
 *.out
 *.pid
 *.gz
+*~
 
 pids
 logs
 results
+
+node_modules
+
+nbproject
+*sublime*
+docs
 
 npm-debug.log
