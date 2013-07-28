@@ -20,11 +20,15 @@ block body
     .container
       section#intro
         .page-header
-          h1 mywebclass – Content Editor.
-            div(ng-controller='AppCtrl')
-              div(ng-repeat='n in name')
-                h3 Current Site: {{n.siteID}}
-              div(ng-view)
+          div(ng-controller='AppCtrl')
+            h2 mywebclass – Content Editor.
+              div(ng-repeat='s in name')
+                Current Site: {{s.siteID}}
+            div
+              span Available Content
+              ul(ng-repeat='p in content')
+                li 
+                  a(href="#") {{p.name}} 
         .row
           .row
             .span7.offset1

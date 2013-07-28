@@ -8,6 +8,12 @@ angular.module('myApp.services', ['ngResource'])
           $http.get('/api/name').success(function(data) {
           callback(data);
         });
+      },
+
+      content: function(callback){
+          $http.get('/api/content').success(function(data) {
+          callback(data);
+        });
       }
     };
 }]);

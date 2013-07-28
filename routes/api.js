@@ -13,3 +13,11 @@ exports.name = function (req, res) {
   		})		
 	});
 };
+
+exports.content = function (req, res) {
+  	generator.getFiles({}, function(files){
+  		res.json({
+  			content: files
+  		})		
+	});
+};
