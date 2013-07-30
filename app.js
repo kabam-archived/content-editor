@@ -9,7 +9,7 @@ var express = require('express'),
 
 var app = module.exports = express();
 //var connect = require('connect'),
-    sharejs = require('share').server;
+sharejs = require('share').server;
 
 //var server = connect(
   //    connect.logger(),
@@ -47,6 +47,7 @@ app.get('/partial/:name', routes.partial);
 // JSON API
 app.get('/api/name', api.name);
 app.get('/api/content', api.content);
+app.get('/api/content/:name', api.markdown);
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
 

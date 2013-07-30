@@ -14,6 +14,13 @@ angular.module('myApp.services', ['ngResource'])
           $http.get('/api/content').success(function(data) {
           callback(data);
         });
+      },
+
+      markdown: function(opts, callback){
+        alert(opts);
+        $http.get('/api/content/:name').success(function(data) {
+          callback(data);
+        });
       }
     };
 }]);

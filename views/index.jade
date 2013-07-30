@@ -24,17 +24,19 @@ block body
             h2 mywebclass – Content Editor.
               div(ng-repeat='s in name')
                 Current Site: {{s.siteID}}
-            div
-              span Available Content
-              ul(ng-repeat='p in content')
-                li 
-                  a(href="#") {{p.name}} 
+            div.dropdown
+              a.btn.dropdown-toggle(data-toggle="dropdown", href="#") Content
+                span.caret
+              ul.dropdown-menu(role="menu", aria-labelledby="dropdownMenu")
+                li(ng-repeat='p in content') 
+                  a(href="content/{{p.name}}", ng-click="load('content/' + p.name)", tabindex = "-1") {{p.name}} 
+            p
         .row
           .row
             .span7.offset1
               h3 Edit Your Content
               .editContainer
-                #editor
+                #editor(ng-controller='EditCtrl')
             .span7.offset1
               h3 Markdown Preview
               #view
@@ -43,6 +45,8 @@ block body
             .span7.offset1
               span.help-block
                 | Everyone viewing this page can see your edits live.
+                button.btn.success Save Changes
+                button.btn.danger Revert Changes
 
     footer.footer
       .container
@@ -67,17 +71,18 @@ block body
     script(src='/share/ace.js')
     script(src='/lib/prettify.js')
     script.
+      var session;
       (function() {
       prettyPrint();
       var converter = new Showdown.converter();
       var view = document.getElementById('view');
-      var editor = ace.edit("editor");
+      var editor = ace.edit("editor",{intialContent: 'hello'});
       editor.setReadOnly(true);
       editor.session.setUseWrapMode(true);
 
       // add Markdown mode
       var MarkdownScriptMode = require("ace/mode/markdown").Mode;
-      var session = editor.getSession();
+      session = editor.getSession();
       session.setMode(new MarkdownScriptMode());
       // *** Editor window
 
@@ -88,6 +93,10 @@ block body
 
       doc.attach_ace(editor);
       editor.setReadOnly(false);
+
+      //set initial values
+      if(!session.getValue())
+        session.setValue("hello");
 
       var render = function() {
       view.innerHTML = converter.makeHtml(doc.snapshot);

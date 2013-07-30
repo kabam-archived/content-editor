@@ -21,3 +21,11 @@ exports.content = function (req, res) {
   		})		
 	});
 };
+
+exports.markdown = function (req, res) {
+    generator.getFiles({}, function(files){
+      res.json({
+        content: files.content
+      })    
+  });
+};

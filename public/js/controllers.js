@@ -1,17 +1,28 @@
 'use strict';
 
 /* Controllers */
-
-function AppCtrl($scope, Sites) {
+function AppCtrl($scope, $routeParams, $location, Sites) {
+  $scope.load = function(p){
+      Sites.markdown(p, function(data){
+        $scope.markdown = data.content;
+        console.log(data);
+        session.setValue(data.content);
+      });  
+  }
 	Sites.get(function(data){
-		console.log(data);
-      $scope.name = data.name;
-    });
+    $scope.name = data.name;
+  });
 
-    Sites.content(function(data){
-      $scope.content = data.content;
-      console.log(data);
-    });
+  Sites.content(function(data){
+    $scope.content = data.content;
+  });
+}
+
+function EditCtrl($scope, $route, $routeParams, Sites){
+ 
+  Sites.markdown(function(data){
+    $scope.markdown = data.content;
+  });  
 }
 
 function MyCtrl1() {}
