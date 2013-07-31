@@ -17,8 +17,7 @@ angular.module('myApp.services', ['ngResource'])
       },
 
       markdown: function(opts, callback){
-        alert(opts);
-        $http.get('/api/content/:name').success(function(data) {
+        $http.get('/api/' + opts.path).success(function(data) {
           callback(data);
         });
       }

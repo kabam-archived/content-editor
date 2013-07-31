@@ -3,9 +3,9 @@
 /* Controllers */
 function AppCtrl($scope, $routeParams, $location, Sites) {
   $scope.load = function(p){
-      Sites.markdown(p, function(data){
-        $scope.markdown = data.content;
-        console.log(data);
+      Sites.markdown({path: p}, function(data){
+        console.log(data.content);
+        //$scope.markdown = data.content;
         session.setValue(data.content);
       });  
   }
