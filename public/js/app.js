@@ -6,7 +6,6 @@ var app = angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.dir
   config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
     .when('/view1', {templateUrl: 'partial/1', controller: MyCtrl1})
-    .when('/:name', {controller: 'AppCtrl'})
     .when('/content/:name', {controller: 'AppCtrl'})
     .otherwise({redirectTo: '/'});
     $locationProvider.html5Mode(true);

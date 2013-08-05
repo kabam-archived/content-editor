@@ -29,7 +29,7 @@ block body
                 span.caret
               ul.dropdown-menu(role="menu", aria-labelledby="dropdownMenu")
                 li(ng-repeat='p in content') 
-                  a(href="content/{{p.name}}", ng-click="load('content/' + p.name)", tabindex = "-1") {{p.name}} 
+                  a(href="content/{{p.name}}", ng-click="load('/content/' + p.name)", tabindex = "-1") {{p.name}} 
             p
         .row
           .row
@@ -70,54 +70,3 @@ block body
     script(src='/share/share.uncompressed.js')
     script(src='/share/ace.js')
     script(src='/lib/prettify.js')
-    script.
-      var session;
-      (function() {
-      prettyPrint();
-      var converter = new Showdown.converter();
-      var view = document.getElementById('view');
-      var editor = ace.edit("editor",{intialContent: 'hello'});
-      editor.setReadOnly(true);
-      editor.session.setUseWrapMode(true);
-
-      // add Markdown mode
-      var MarkdownScriptMode = require("ace/mode/markdown").Mode;
-      session = editor.getSession();
-      session.setMode(new MarkdownScriptMode());
-      // *** Editor window
-
-      var connection = sharejs.open('blag', 'text', function(error, doc) {
-      if (error) {
-      console.log(error);
-      } else {
-
-      doc.attach_ace(editor);
-      editor.setReadOnly(false);
-
-      //set initial values
-      if(!session.getValue())
-        session.setValue("hello");
-
-      var render = function() {
-      view.innerHTML = converter.makeHtml(doc.snapshot);
-      };
-      }
-      window.doc = doc;
-      render();
-      doc.on('change', render);
-      //});
-      });
-      // *** Connection status display
-      var status = document.getElementById('status');
-      var register = function(state, klass, text) {
-      connection.on(state, function() {
-      status.className = 'label ' + klass;
-      status.innerHTML = text;
-      });
-      };
-      register('ok', 'success', 'Online');
-      register('connecting', 'warning', 'Connecting...');
-      register('disconnected', 'important', 'Offline');
-      register('stopped', 'important', 'Error');
-      
-      })();  
