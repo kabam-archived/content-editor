@@ -25,8 +25,16 @@ exports.content = function (req, res) {
 exports.markdown = function (req, res) {
   //change to use getFile
     generator.getFiles({name: req.params.name}, function(files){
-      res.json({
-        content: files[0].content
-      })    
+      console.log(files);
+      if(files.length === 0) {
+        res.json({
+          content: []
+        })
+      } else {
+        res.json({
+          content: files[0].content
+        }) 
+      }
+   
   });
 };

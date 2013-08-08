@@ -27,8 +27,12 @@ function AppCtrl($scope, $routeParams, $location, Sites) {
 
         if(p === "/" || p === undefined) return;
           Sites.markdown({path: p}, function(data){
-            console.log(session);
-            session.setValue(data.content);
+            if(data.content.length === 0) {
+              session.setValue('File Note Found - Begin Typing to Create it!');
+            } else {
+              console.log(session);
+              session.setValue(data.content);
+            }
         });  
         var render = function() {
           view.innerHTML = converter.makeHtml(doc.snapshot);
@@ -60,7 +64,7 @@ function AppCtrl($scope, $routeParams, $location, Sites) {
     $scope.load(p);
   })($location.$$path);
 
-  console.log($location.$$path);
+  //console.log($location.$$path);
 
 	Sites.get(function(data){
     $scope.name = data.name;
