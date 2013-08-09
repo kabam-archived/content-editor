@@ -3,11 +3,25 @@
 /* Controllers */
 function AppCtrl($scope, $routeParams, $location, Sites) {
 
+var editor = ace.edit("editor",{intialContent: 'hello'});
+
+  $scope.saveDoc = function(){
+    var content = {
+    name: $location.$$path.split('/').pop(),
+    type: 'md',
+    content: editor.getSession().getValue(),
+    siteID: 'test',
+    path: 'src/documents/',
+    fullPath: this.path + this.name + '.' + this.path
+  }
+
+    Sites.saveContent({path: $location.$$path}, content)
+  };
+
   $scope.load = function(p){
       prettyPrint();
       var converter = new Showdown.converter();
       var view = document.getElementById('view');
-      var editor = ace.edit("editor",{intialContent: 'hello'});
       editor.setReadOnly(true);
       editor.session.setUseWrapMode(true);
 

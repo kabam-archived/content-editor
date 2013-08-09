@@ -44,6 +44,7 @@ app.get('/partial/:name', routes.partial);
 app.get('/api/name', api.name);
 app.get('/api/content', api.content);
 app.get('/api/content/:name', api.markdown);
+app.post('/api/content/:name', api.saveContent)
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
 

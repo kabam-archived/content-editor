@@ -17,10 +17,10 @@ block body
               a(href='#') About
             li
               a(href='https://github.com/mywebclass/content-editor') Github
-    .container
+    .container(ng-controller='AppCtrl')
       section#intro
         .page-header
-          div(ng-controller='AppCtrl')
+          div
             h2 mywebclass – Content Editor.
               div(ng-repeat='s in name')
                 Current Site: {{s.siteID}}
@@ -45,7 +45,7 @@ block body
             .span7.offset1
               span.help-block
                 | Everyone viewing this page can see your edits live.
-                button.btn.success Save Changes
+                button.btn.success(ng-click="saveDoc()") Save Changes
                 button.btn.danger Revert Changes
 
     footer.footer

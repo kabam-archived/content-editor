@@ -34,7 +34,18 @@ exports.markdown = function (req, res) {
         res.json({
           content: files[0].content
         }) 
-      }
-   
+      }  
+  });
+};
+
+exports.saveContent = function(req, res) {
+  generator.getFiles({name: req.params.name}, function(files){
+      if(files.length === 0) {
+        generator.insertFile(req.body, function(){
+          console.log('complete');
+        })
+      } else {
+        //update
+      }  
   });
 };

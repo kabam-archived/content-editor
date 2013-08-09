@@ -25,6 +25,16 @@ angular.module('myApp.services', ['ngResource'])
           error(function(data, status){s
             return status
           });
+      },
+
+      saveContent: function(opts, data, callback){
+        $http.post('/api' + opts.path, data).
+        success(function(data, status) {
+          console.log(status);
+        }).
+        error(function(data, status){
+            return status
+        });
       }
     };
 }]);
