@@ -45,7 +45,10 @@ exports.saveContent = function(req, res) {
           console.log('complete');
         })
       } else {
-        //update
+        console.log(req.body.name + req.body.type + req.body.path)
+        generator.updateFile({name: req.body.name, type: 'html', path: req.body.path},{content: req.body.content}, function(){
+          console.log('complete');
+        })
       }  
   });
 };
