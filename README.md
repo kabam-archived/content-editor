@@ -10,7 +10,7 @@ node app
 
 TODO:
 ==============
-Allow database writes using the Static Site Generator
+- Allow database configuration to be passed into the static site generator
 
-Publish Site
+- Publish Site
 
