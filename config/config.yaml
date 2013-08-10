@@ -1,0 +1,35 @@
+development:
+  port: 3080
+  db: mongodb://localhost/ssg_dev
+  app:
+    name: MyWebClass Static Site Generator Development Version
+    url: http://node.mywebclass.org
+  smtp:
+    service: Gmail
+    user: USER@DOMAIN
+    pass: PASSWORD
+  confirmationLinkExpire: 1
+
+test:
+  port: 3080
+  db: mongodb://localhost/ssg_test
+  app:
+    name: MyWebClass Static Site Generator Testing Version
+    url: http://node.mywebclass.org
+  smtp:
+    service: Gmail
+    user: USER@DOMAIN
+    pass: PASSWORD
+  confirmationLinkExpire: 1
+
+production:
+  port: 80
+  db: mongodb://localhost/ssg
+  app:
+    name: MyWebClass Static Site Generator
+    url: http://node.mywebclass.org
+  smtp:
+    service: Gmail
+    user: USER@DOMAIN
+    pass: PASSWORD
+  confirmationLinkExpire: 72

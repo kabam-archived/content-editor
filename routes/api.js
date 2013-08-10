@@ -1,4 +1,4 @@
-var generator = require('static_site_generator').db;
+var generator = require('../lib/db')
 /*
  * Serve JSON to our AngularJS client
  */
