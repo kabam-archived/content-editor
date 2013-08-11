@@ -1,4 +1,4 @@
-var generator = require('../lib/db')
+var db = require('../lib/db')
 /*
  * Serve JSON to our AngularJS client
  */
@@ -7,7 +7,7 @@ var generator = require('../lib/db')
 * Returns an object containing all sites
 */
 exports.name = function (req, res) {
-  	generator.getSites({}, function(sites){
+  	db.getSites({}, function(sites){
   		res.json({
   			name: sites
   		})		
@@ -15,7 +15,7 @@ exports.name = function (req, res) {
 };
 
 exports.content = function (req, res) {
-  	generator.getFiles({}, function(files){
+  	db.getFiles({}, function(files){
   		res.json({
   			content: files
   		})		
@@ -24,7 +24,7 @@ exports.content = function (req, res) {
 
 exports.markdown = function (req, res) {
   //change to use getFile
-    generator.getFiles({name: req.params.name}, function(files){
+    db.getFiles({name: req.params.name}, function(files){
       console.log(files);
       if(files.length === 0) {
         res.json({
@@ -39,14 +39,15 @@ exports.markdown = function (req, res) {
 };
 
 exports.saveContent = function(req, res) {
-  generator.getFiles({name: req.params.name}, function(files){
+  db.getFiles({name: req.params.name}, function(files){
       if(files.length === 0) {
-        generator.insertFile(req.body, function(){
+        //insert SiteFile
+        db.insertFile(req.body, function(){
           console.log('complete');
         })
       } else {
         console.log(req.body.name + req.body.type + req.body.path)
-        generator.updateFile({name: req.body.name, type: 'html', path: req.body.path},{content: req.body.content}, function(){
+        db.updateFile({name: req.body.name, type: 'html', path: req.body.path},{content: req.body.content}, function(){
           console.log('complete');
         })
       }  

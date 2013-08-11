@@ -25,11 +25,12 @@ block body
               div(ng-repeat='s in name')
                 Current Site: {{s.siteID}}
             div.dropdown
-              a.btn.dropdown-toggle(data-toggle="dropdown", href="#") Content
+              a.btn.dropdown-toggle(data-toggle="dropdown", href='#') Available Routes
                 span.caret
               ul.dropdown-menu(role="menu", aria-labelledby="dropdownMenu")
-                li(ng-repeat='p in content') 
-                  a(href="content/{{p.name}}", ng-click="load('/content/' + p.name)", tabindex = "-1") {{p.name}} 
+                li(ng-repeat='p in content')
+                  div(ng-if='p.name != loc')
+                    a(href="content/{{p.name}}", ng-click="load('/content/' + p.name)", tabindex = "-1") {{p.name}} 
             p
         .row
           .row

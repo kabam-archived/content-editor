@@ -7,16 +7,17 @@ var editor = ace.edit("editor",{intialContent: 'hello'});
 
   $scope.saveDoc = function(){
     var content = {
-    name: $location.$$path.split('/').pop(),
-    type: 'md',
-    content: editor.getSession().getValue(),
-    siteID: 'test',
-    path: 'src/documents/',
-    fullPath: this.path + this.name + '.' + this.path
-  }
-
+      name: $location.$$path.split('/').pop(),
+      type: 'md',
+      content: editor.getSession().getValue(),
+      siteID: 'test',
+      path: 'src/documents/',
+      fullPath: this.path + this.name + '.' + this.path
+    }
     Sites.saveContent({path: $location.$$path}, content)
   };
+
+  $scope.loc = $location.$$path.replace(/^.*[\\\/]/, '');
 
   $scope.load = function(p){
       prettyPrint();
@@ -29,31 +30,31 @@ var editor = ace.edit("editor",{intialContent: 'hello'});
       var MarkdownScriptMode = require("ace/mode/markdown").Mode;
       var session = editor.getSession();
       session.setMode(new MarkdownScriptMode());
-      
-      var filename = p.replace(/^.*[\\\/]/, '')
-      var connection = sharejs.open(filename, 'text', function(error, doc) {
-      if (error) {
-        console.log(error);
-      } else {
+      session.setValue('');
+      //var filename = p.replace(/^.*[\\\/]/, '')
+      var connection = sharejs.open($scope.loc, 'text', function(error, doc) {
 
-        doc.attach_ace(editor);
-        editor.setReadOnly(false);
+        if (error) {
+          console.log(error);
+        } else {
+          doc.attach_ace(editor);
+          editor.setReadOnly(false);
 
-        if(p === "/" || p === undefined) return;
-          Sites.markdown({path: p}, function(data){
-            if(data.content.length === 0) {
-              session.setValue('File Note Found - Begin Typing to Create it!');
-            } else {
-              console.log(session);
-              session.setValue(data.content);
-            }
-        });  
-        var render = function() {
-          view.innerHTML = converter.makeHtml(doc.snapshot);
-        };
-      }
+          if(p === "/" || p === undefined) return;
+            Sites.markdown({path: p}, function(data){
+              if(data.content.length === 0) {
+                session.setValue('**File Note Found - Begin Typing to Create it!**');
+              } else {
+                session.setValue(data.content);
+              }
+          });
 
-      window.doc = doc;
+          var render = function() {
+            view.innerHTML = converter.makeHtml(session.getValue());
+          };
+        }
+
+        window.doc = doc;
         render();
         doc.on('change', render);
       });
@@ -78,8 +79,6 @@ var editor = ace.edit("editor",{intialContent: 'hello'});
     $scope.load(p);
   })($location.$$path);
 
-  //console.log($location.$$path);
-
 	Sites.get(function(data){
     $scope.name = data.name;
   });
@@ -89,15 +88,4 @@ var editor = ace.edit("editor",{intialContent: 'hello'});
   });
 }
 
-function EditCtrl($scope, $route, $routeParams, Sites){
- console.log($route);
 
-}
-
-function MyCtrl1() {}
-MyCtrl1.$inject = [];
-
-
-function MyCtrl2() {
-}
-MyCtrl2.$inject = [];
